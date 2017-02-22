@@ -11,7 +11,6 @@ void setup ()
 {
     size(400, 400);
     textAlign(CENTER,CENTER);
-    
     // make the manager
     Interactive.make( this );
     buttons = new MSButton[NUM_ROWS][NUM_COLS];
@@ -25,13 +24,25 @@ void setup ()
 }
 public void setBombs()
 {
-    for(int b = 0;b<BOMBS;b++)//your code
+    int rows = (int)(Math.random()*NUM_ROWS);
+    int cols = (int)(Math.random()*NUM_COLS);
+    int b = 0;
+    while(b<BOMBS)//your code
     {
-        int q = (int)Math.random()*NUM_ROWS;
-        int e = (int)Math.random()*NUM_COLS;
-        if(!bombs.contains(buttons[q][e]))
-            bombs.add(buttons[q][e]);
+        if(!bombs.contains(buttons[rows][cols]))
+            {
+                bombs.add(buttons[rows][cols]);
+                rows = (int)(Math.random()*NUM_ROWS);
+                cols = (int)(Math.random()*NUM_COLS);
+                b++;
+            }
+        else
+        {
+            rows = (int)(Math.random()*NUM_ROWS);
+            cols = (int)(Math.random()*NUM_COLS); 
+        }    
     }
+    System.out.println(bombs.size());
 }
 
 public void draw ()
@@ -86,14 +97,15 @@ public class MSButton
     public void mousePressed () 
     {
         clicked = true;
-        //your code here
+        String myString = new String();
+        setLabel(myString + countBombs(r,c));//your code here
     }
 
     public void draw () 
     {    
         if (marked)
             fill(0);
-        else if( clicked && bombs.contains(this) ) 
+        else if(clicked && bombs.contains(this)) 
             fill(255,0,0);
         else if(clicked)
             fill( 200 );
@@ -116,7 +128,14 @@ public class MSButton
     public int countBombs(int row, int col)
     {
         int numBombs = 0;
-        //your code here
+        for(int i = row-1;i<row+2;i++)
+        {
+            for(int j = col-1;j<col+2;j++)
+            {
+                if(bombs.contains(this))
+                    numBombs+=1;
+            }   //your code here
+        }
         return numBombs;
     }
 }
