@@ -98,7 +98,13 @@ public class MSButton
     {
         clicked = true;
         String myString = new String();
-        setLabel(myString + countBombs(r,c));//your code here
+        if(countBombs(r,c)>0)
+        {
+            setLabel(myString + countBombs(r,c));//your code here
+        }
+        else{
+            setLabel(myString); 
+        }
     }
 
     public void draw () 
@@ -122,7 +128,8 @@ public class MSButton
     }
     public boolean isValid(int r, int c)
     {
-        //your code here
+        if(r<NUM_ROWS && c < NUM_COLS && r >=0 && c >=0)
+            return true;//your code here
         return false;
     }
     public int countBombs(int row, int col)
@@ -132,7 +139,7 @@ public class MSButton
         {
             for(int j = col-1;j<col+2;j++)
             {
-                if(bombs.contains(this))
+                if(bombs.contains(buttons[i][j])==true && isValid(i,j)==true)
                     numBombs+=1;
             }   //your code here
         }
