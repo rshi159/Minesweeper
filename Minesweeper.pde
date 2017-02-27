@@ -140,7 +140,8 @@ public class MSButton
             for(int j = col-1;j<col+2;j++)
             {
                 if(bombs.contains(buttons[i][j])==true && isValid(i,j)==true)
-                    numBombs+=1;
+                    numBombs++;
+                }
             }   //your code here
         }
         return numBombs;
