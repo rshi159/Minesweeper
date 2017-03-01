@@ -3,7 +3,7 @@
 import de.bezier.guido.*;
 public static int NUM_ROWS = 20;
 public static int NUM_COLS = 20;
-public static int BOMBS = 30;
+public static int BOMBS = 20;
 //Declare and initialize NUM_ROWS and NUM_COLS = 20
 private MSButton[][] buttons; //2d array of minesweeper buttons
 private ArrayList <MSButton> bombs = new ArrayList <MSButton>(); //ArrayList of just the minesweeper buttons that are mined
@@ -42,7 +42,6 @@ public void setBombs()
             cols = (int)(Math.random()*NUM_COLS); 
         }    
     }
-    System.out.println(bombs.size());
 }
 
 public void draw ()
@@ -71,6 +70,7 @@ public class MSButton
     private float x,y, width, height;
     private boolean clicked, marked;
     private String label;
+    private boolean firstClick;
     
     public MSButton ( int rr, int cc )
     {
@@ -96,6 +96,12 @@ public class MSButton
     
     public void mousePressed () 
     {
+        System.out.println(countBombs(r-1,c));
+        if(firstClick = true)
+        {
+            clicked = true;
+            pulse(r,c);
+        }
         clicked = true;
         String myString = new String();
         if(countBombs(r,c)>0)
@@ -104,9 +110,19 @@ public class MSButton
         }
         else{
             setLabel(myString); 
-        }
+       }
     }
-
+    public void pulse(int a,int b)
+    {
+        if(isValid(a,b)==true&&countBombs(a,b)==0)
+            {
+                if(countBombs(a-1,b)==0)
+                {
+                    buttons[a-1][b].clicked=true;
+                    pulse(a-1,b);
+                }
+            }
+    }
     public void draw () 
     {    
         if (marked)
@@ -135,18 +151,17 @@ public class MSButton
     public int countBombs(int row, int col)
     {
         int numBombs = 0;
-        for(int i = row-1;i<row+2;i++)
+        for(int i=-1;i<2;i++)
         {
-            for(int j = col-1;j<col+2;j++)
+            for(int j=-1;j<2;j++)
             {
-                if(bombs.contains(buttons[i][j])==true && isValid(i,j)==true)
+                if(isValid(row+i,j+col)==true && bombs.contains(buttons[row+i][col+j])==true)
                     numBombs++;
                 }
             }   //your code here
-        }
         return numBombs;
     }
 }
 
-
+//cd c:/users/roshi/documents/apjava/Minesweeper
 
