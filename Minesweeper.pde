@@ -3,7 +3,7 @@
 import de.bezier.guido.*;
 public static int NUM_ROWS = 20;
 public static int NUM_COLS = 20;
-public static int BOMBS = 20;
+public static int BOMBS = 50;
 //Declare and initialize NUM_ROWS and NUM_COLS = 20
 private MSButton[][] buttons; //2d array of minesweeper buttons
 private ArrayList <MSButton> bombs = new ArrayList <MSButton>(); //ArrayList of just the minesweeper buttons that are mined
@@ -70,7 +70,6 @@ public class MSButton
     private float x,y, width, height;
     private boolean clicked, marked;
     private String label;
-    private boolean firstClick;
     
     public MSButton ( int rr, int cc )
     {
@@ -96,32 +95,37 @@ public class MSButton
     
     public void mousePressed () 
     {
-        System.out.println(countBombs(r-1,c));
-        if(firstClick = true)
+            if(mouseButton == LEFT && clicked == false && isValid(r,c) && countBombs(r,c)==0 && marked == false)
+            {
+                clicked = true;
+                if(isValid(r,c-1) && buttons[r][c-1].marked==false)
+                    buttons[r][c-1].mousePressed();
+                if(isValid(r,c+1) && buttons[r][c+1].marked==false)
+                    buttons[r][c+1].mousePressed();
+                if(isValid(r+1,c) && buttons[r+1][c].marked==false)
+                    buttons[r+1][c].mousePressed();
+                if(isValid(r-1,c) && buttons[r-1][c].marked==false)
+                    buttons[r-1][c].mousePressed();
+            }
+            else if(countBombs(r,c)>0)
+            {
+               //reshuffle 
+            }
+        if(mouseButton == LEFT && isMarked() == false)
         {
             clicked = true;
-            pulse(r,c);
-        }
-        clicked = true;
-        String myString = new String();
-        if(countBombs(r,c)>0)
-        {
-            setLabel(myString + countBombs(r,c));//your code here
-        }
-        else{
-            setLabel(myString); 
-       }
-    }
-    public void pulse(int a,int b)
-    {
-        if(isValid(a,b)==true&&countBombs(a,b)==0)
+            String myString = new String();
+            if(countBombs(r,c)>0)
             {
-                if(countBombs(a-1,b)==0)
-                {
-                    buttons[a-1][b].clicked=true;
-                    pulse(a-1,b);
-                }
+                setLabel(myString + countBombs(r,c));//your code here
             }
+            else
+            {
+                setLabel(myString); 
+            }
+        }
+        else if(mouseButton == RIGHT && clicked == false)
+            marked = !marked;
     }
     public void draw () 
     {    
