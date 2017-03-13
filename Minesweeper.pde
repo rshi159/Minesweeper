@@ -58,7 +58,7 @@ public boolean isWon()
 }
 public void displayLosingMessage()
 {
-    //your code here
+    text("you lose",300,300);
 }
 public void displayWinningMessage()
 {
@@ -113,7 +113,12 @@ public class MSButton
             {
                //reshuffle 
             }
-        if(mouseButton == LEFT && isMarked() == false)
+        if(mouseButton == LEFT && isMarked() == false&&bombs.contains(buttons[r][c])==true)
+        {
+            clicked = true;
+            displayLosingMessage();
+        }
+        else if(mouseButton == LEFT && isMarked() == false)
         {
             clicked = true;
             String myString = new String();
