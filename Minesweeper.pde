@@ -21,7 +21,6 @@ void setup ()
         for(int j = 0; j < NUM_ROWS;j++)
             buttons[j][i]= new MSButton(j,i);
     }
-    setBombs();
 }
 public void setBombs()
 {
@@ -96,17 +95,36 @@ public class MSButton
     
     public void mousePressed() 
     {
-            if(mouseButton == LEFT && clicked == false && isValid(r,c) && countBombs(r,c)==0 && marked == false)
+        if(firstClick == true&&mouseButton == LEFT && clicked == false)
+        {
+            firstClick=false;
+            setBombs();
+            if(bombs.contains(buttons[r][c]))
+            {
+                bombs.remove(buttons[r][c]);
+                setBombs();
+            }
+            //jkdfahvguisdgisdhjkl ghjks ghdf
+        }
+        if(mouseButton == LEFT && clicked == false && isValid(r,c) && countBombs(r,c)==0 && marked == false)
             {
                 clicked = true;
-                if(isValid(r,c-1) && buttons[r][c-1].marked==false)
-                    buttons[r][c-1].mousePressed();
-                if(isValid(r,c+1) && buttons[r][c+1].marked==false)
-                    buttons[r][c+1].mousePressed();
                 if(isValid(r+1,c) && buttons[r+1][c].marked==false)
                     buttons[r+1][c].mousePressed();
-                if(isValid(r-1,c) && buttons[r-1][c].marked==false)
+                if(isValid(r+1,c+1) && buttons[r+1][c].marked==false)
+                    buttons[r+1][c+1].mousePressed();
+                if(isValid(r+1,c-1) && buttons[r+1][c].marked==false)
+                    buttons[r+1][c-1].mousePressed();
+                if(isValid(r-1,c) && buttons[r+1][c].marked==false)
                     buttons[r-1][c].mousePressed();
+                if(isValid(r-1,c+1) && buttons[r+1][c].marked==false)
+                    buttons[r-1][c+1].mousePressed();
+                if(isValid(r-1,c-1) && buttons[r+1][c].marked==false)
+                    buttons[r-1][c-1].mousePressed();
+                if(isValid(r,c-1) && buttons[r+1][c].marked==false)
+                    buttons[r][c-1].mousePressed();
+                if(isValid(r,c+1) && buttons[r+1][c].marked==false)
+                    buttons[r][c+1].mousePressed();
             }
         if(mouseButton == LEFT && isMarked() == false&&bombs.contains(buttons[r][c])==true)
         {
