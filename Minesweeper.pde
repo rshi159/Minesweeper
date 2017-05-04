@@ -5,6 +5,7 @@ public static int NUM_ROWS = 20;
 public static int NUM_COLS = 20;
 public static int BOMBS = 50;
 public boolean firstClick = true;
+public boolean youSuck = false;
 //Declare and initialize NUM_ROWS and NUM_COLS = 20
 private MSButton[][] buttons; //2d array of minesweeper buttons
 private ArrayList <MSButton> bombs = new ArrayList <MSButton>(); //ArrayList of just the minesweeper buttons that are mined
@@ -57,6 +58,7 @@ public boolean isWon()
 }
 public void displayLosingMessage()
 {
+    youSuck=true;
     text("you lose",300,300);
 }
 public void displayWinningMessage()
@@ -104,36 +106,19 @@ public class MSButton
                 bombs.remove(buttons[r][c]);
                 setBombs();
             }
-            //jkdfahvguisdgisdhjkl ghjks ghdf
+            System.out.println("yay");
+            clearUseless();
         }
-        if(mouseButton == LEFT && clicked == false && isValid(r,c) && countBombs(r,c)==0 && marked == false)
-            {
-                clicked = true;
-                if(isValid(r+1,c) && buttons[r+1][c].marked==false)
-                    buttons[r+1][c].mousePressed();
-                if(isValid(r+1,c+1) && buttons[r+1][c].marked==false)
-                    buttons[r+1][c+1].mousePressed();
-                if(isValid(r+1,c-1) && buttons[r+1][c].marked==false)
-                    buttons[r+1][c-1].mousePressed();
-                if(isValid(r-1,c) && buttons[r+1][c].marked==false)
-                    buttons[r-1][c].mousePressed();
-                if(isValid(r-1,c+1) && buttons[r+1][c].marked==false)
-                    buttons[r-1][c+1].mousePressed();
-                if(isValid(r-1,c-1) && buttons[r+1][c].marked==false)
-                    buttons[r-1][c-1].mousePressed();
-                if(isValid(r,c-1) && buttons[r+1][c].marked==false)
-                    buttons[r][c-1].mousePressed();
-                if(isValid(r,c+1) && buttons[r+1][c].marked==false)
-                    buttons[r][c+1].mousePressed();
-            }
-        if(mouseButton == LEFT && isMarked() == false&&bombs.contains(buttons[r][c])==true)
+        if(youSuck==true)
+            ;
+        else if(mouseButton == LEFT && isMarked() == false&&bombs.contains(buttons[r][c])==true)
         {
             clicked = true;
             displayLosingMessage();
         }
-        else if(mouseButton == LEFT && isMarked() == false)
+        else  if(mouseButton == LEFT && isMarked() == false)
         {
-            clicked = true;
+            clicked=true;
             String myString = new String();
             if(countBombs(r,c)>0)
             {
@@ -143,9 +128,22 @@ public class MSButton
             {
                 setLabel(myString); 
             }
+            clearUseless();
         }
         else if(mouseButton == RIGHT && clicked == false)
             marked = !marked;
+        }
+        public void clearUseless()
+    {
+             for(int a = -1; a<2; a++){
+                for(int b = -1; b<2; b++){
+                    if(isValid(r+a,c+b) && countBombs(r,c)==0 && buttons[r+a][c+b].marked==false){
+                        if(buttons[r+a][c+b].isClicked() == false){
+                            buttons[r+a][c+b].mousePressed();
+                        }
+                    }
+                }
+            }
     }
     public void draw () 
     {    
