@@ -118,12 +118,10 @@ public class MSButton
             setBombs();
             if(bombs.contains(buttons[r][c])||countBombs(r,c)>0)
             {
-                System.out.println("no");
                 clearBombs(r,c);
                 setBombs();
             }
             firstClick = false;
-            System.out.println("yay");
             clearUseless();
             if(firstClick == false)
                 mousePressed();
@@ -219,12 +217,8 @@ public class MSButton
                         count ++;
                 }
         }
-        System.out.println(count);
-        System.out.println("     "+((NUM_COLS*NUM_ROWS)-BOMBS));
         if(count == ((NUM_COLS*NUM_ROWS)-BOMBS))
             youGreat = true;
-
-        System.out.println(youGreat);
     }
 }
 
