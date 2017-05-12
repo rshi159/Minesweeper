@@ -3,7 +3,7 @@
 import de.bezier.guido.*;
 public static int NUM_ROWS = 20;
 public static int NUM_COLS = 20;
-public static int BOMBS = 5;
+public static int BOMBS = 75;
 public boolean firstClick = true;
 public boolean youSuck = false;
 public boolean youGreat = false;
@@ -30,7 +30,7 @@ public void setBombs()
 {
     int rows = (int)(Math.random()*NUM_ROWS);
     int cols = (int)(Math.random()*NUM_COLS);
-    int b = 0;
+    int b = bombs.size();
     while(b<BOMBS)//your code
     {
         if(!bombs.contains(buttons[rows][cols]))
@@ -45,6 +45,16 @@ public void setBombs()
             rows = (int)(Math.random()*NUM_ROWS);
             cols = (int)(Math.random()*NUM_COLS); 
         }    
+    }
+}
+public void clearBombs(int row, int col)
+{
+    for(int r=-1;r<2;r++)
+    {
+        for(int c=-1;c<2;c++)
+        {
+            bombs.remove(buttons[row+r][col+c]);
+        }
     }
 }
 public void displayLosingMessage()
@@ -105,13 +115,14 @@ public class MSButton
     {
         if(firstClick == true&&mouseButton == LEFT && clicked == false)
         {
-            firstClick=false;
             setBombs();
-            if(bombs.contains(buttons[r][c]))
+            if(bombs.contains(buttons[r][c])||countBombs(r,c)>0)
             {
-                bombs.remove(buttons[r][c]);
+                System.out.println("no");
+                clearBombs(r,c);
                 setBombs();
             }
+            firstClick = false;
             System.out.println("yay");
             clearUseless();
             if(firstClick == false)
